@@ -1,0 +1,299 @@
+---
+title: "Benchmark blasso p>n"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Benchmark blasso (p > n) horseshoe prior}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+date: "2025-04-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 7,
+  fig.height = 5)
+```
+
+
+```{r load-helpers, include=FALSE}
+helpers_dir <- file.path(dirname(knitr::current_input()), "helpers")
+
+helper_files <- c(
+  "benchmark_3bg.R",
+  "benchmark_4bg.R",
+  "benchmark_blasso_bayeslm.R",
+  "benchmark_blasso_bayesreg.R",
+  "benchmark_blasso_hans.R",
+  "benchmark_blasso_monomvn.R",
+  "benchmark_blasso_rstan.R",
+  "benchmark_EHS.R",
+  "benchmark_horseshoe.R",
+  "benchmark_horseshoe_bayeslm.R",
+  "benchmark_horseshoe_bayesreg.R",
+  "benchmark_horseshoe_brms.R",
+  "generate_data.R",
+  "plot_densities.R"
+)
+
+for (f in helper_files) {
+  source(file.path(helpers_dir, f))
+}
+```
+
+
+# Load R scripts
+
+Note that each of the benchmarking functions the inputs are
+
+* vy
+* mX
+* nburn
+* nsamples
+* a, b, u, v - prior hyperparameters
+* trials - the number of times each MCMC sampler is run
+* beta_inds - an index set of beta coefficients for plotting - if NA will calculate these.
+
+The outputs are:
+
+* Median efficiencies for beta, sigma2, lambda2 over the number of trials
+* beta_inds
+* (x,y) grid for plotting the top 10 average betas
+* (x,y) grid for plotting posterior for sigma2 and lambda2
+* rhat values for sigma2 and lambda2
+* sigma2 and lambda2 samples
+
+
+
+# Select a dataset name
+
+```{r}
+
+# if (!requireNamespace("flare", quietly = TRUE)) {
+#   knitr::knit_exit()
+# }
+# dataset_name <- "eyedata"
+
+
+
+# if (!requireNamespace("hdi", quietly = TRUE)) {
+#   knitr::knit_exit()
+# }
+
+```
+
+# Set options
+
+```{r}
+
+library(LassoHiDFastGibbs)
+
+
+# Set prior hyperparameter constants
+a = 1.0E-2  # Prior shape for sigma2
+b = 1.0E-2  # Prior scale for sigma2
+u = 1.0E-2  # Prior shape for lambda2
+v = 1.0E-2  # Prior scale for lambda2
+
+# Initial values for lambda2 and sigma2
+lambda2_init  = 10
+lambda_init = sqrt(lambda2_init)
+sigma2_init = 1
+
+# Number of samples to run the MCMC
+nburn = 10   # 1000
+nsamples = 110   #  11000
+inds_use = (nburn + 1):nsamples
+
+# How many times to run each sampler
+trials = 1   # 50
+if (dataset_name=="qtl") {
+  trials = 15
+}
+```
+
+# Generate and normalize dataset
+
+```{r}
+res = generate_data(dataset_name)
+
+mX = res$mX
+vy = res$vy
+p = res$p
+n = res$n
+
+rm(res)
+```
+
+
+ 
+
+# The modified Park and Casella Gibbs sampler
+
+
+
+```{r tiny-example, eval=TRUE}
+res_4BG = benchmark_4bg(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=NA) 
+# print(res_4BG)
+```
+
+
+```{r, eval=interactive()}
+res_3BG = benchmark_3bg(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=res_4BG$beta_inds) 
+# print(res_3BG)
+```
+
+
+# The two-block Gibbs sampler with 3/1 grouping
+
+ 
+
+```{r, eval=interactive()}
+res_ng1 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=1,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+
+```{r, eval=interactive()}
+res_ng2 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=2,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+```{r, eval=interactive()}
+res_ng3 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=3,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+```{r, eval=interactive()}
+res_ng4 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=4,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+```{r, eval=interactive()}
+res_ng5 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=5,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+
+
+```{r, eval=interactive()}
+res_ng10 = benchmark_nested_gibbs(vy,
+                                mX,
+                                penalty_type="horseshoe",
+                                lambda_init=1,
+                                sigma2_init=1,
+                                a, b, u, v,
+                                nburn, nsamples,
+                                s_beta=10,
+                                trials,
+                                beta_inds=res_4BG$beta_inds) 
+```
+
+
+
+# The partially collapsed Gibbs samplers
+
+
+```{r, eval=interactive()}
+res_pcg_ls = benchmark_pcg_lambda2_col_sigma2(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=res_4BG$beta_inds) 
+# print(res_pcg_ls)
+```
+
+```{r, eval=interactive()}
+res_pcg_sl = benchmark_pcg_sigma2_col_lambda2(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=res_4BG$beta_inds) 
+# print(res_pcg_sl)
+```
+
+
+
+```{r, eval=interactive()}
+res_pcg_bs = benchmark_pcg_vbeta_col_sigma2(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=res_4BG$beta_inds) 
+# print(res_pcg_bs)
+```
+
+
+```{r, eval=interactive()}
+res_pcg_sb = benchmark_pcg_vbeta_col_sigma2(vy, mX, "horseshoe", lambda_init, sigma2_init, a, b, u, v, nburn, nsamples, trials, beta_inds=res_4BG$beta_inds) 
+# print(res_pcg_sb)
+```
+
+
+ 
+ 
+```{r, eval=interactive()}
+
+res_EHS <- NULL
+
+if (requireNamespace("Mhorseshoe", quietly = TRUE)) {
+  res_EHS = benchmark_EHS(vy, mX,
+                                              lambda_init, sigma2_init, a, b, u, v, 
+                                              nburn, nsamples, trials=1, 
+                                              beta_inds=res_4BG$beta_inds) 
+} else {
+  message("Skipping Mhorseshoe benchmark: package 'Mhorseshoe' is not installed.")
+}
+# print(res_EHS)
+```
+
+
+ 
+```{r, eval=interactive()}
+
+res_AHS <- NULL
+
+if (requireNamespace("Mhorseshoe", quietly = TRUE)) {
+  res_AHS = benchmark_AHS(vy, mX,
+                                              lambda_init, sigma2_init, a, b, u, v, 
+                                              nburn, nsamples, trials=1, 
+                                              beta_inds=res_4BG$beta_inds) 
+} else {
+  message("Skipping Mhorseshoe benchmark: package 'Mhorseshoe' is not installed.")
+}
+# print(res_AHS)
+```

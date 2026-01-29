@@ -1,0 +1,6 @@
+Third-party and shared-authorship code included in this package:
+
+File: src/lasso_distribution.cpp
+Authors: Jonathon Tidswell, John Ormerod, Mohammad Javad Davoudabadi, Garth Tarr, Samuel Mueller
+Origin: BayesianLasso R package (CRAN)
+Notes: This file contains code with shared authorship. Original attribution has been preserved.

@@ -1,0 +1,15 @@
+citHeader("To cite LassoHiDFastGibbs in publications, please use:")
+
+bibentry(
+  bibtype = "Manual",
+  title   = "LassoHiDFastGibbs: Blocked, Partially Collapsed, and Nested Gibbs Samplers for the Bayesian Lasso",
+  author  = c(
+    person("John", "Ormerod"),
+    person("Mohammad Javad", "Davoudabadi"),
+    person("Garth", "Tarr"),
+    person("Samuel", "Mueller")
+  ),
+  year    = "2026",
+  note    = "R package version 0.1.4",
+  url     = "https://github.com/MJDavoudabadi/LassoHiDFastGibbs"
+)
