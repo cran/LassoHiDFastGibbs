@@ -1,6 +1,6 @@
-6594f27f447f058916ad49af4c04d51e *DESCRIPTION
+2e8e495cc9e89477f85147e49d8137a9 *DESCRIPTION
 35c8d8641f287ffc594b9bdfeec3aaad *NAMESPACE
-e4d5b76f2ba7e7bf2f5cf5dfc5f66014 *NEWS.md
+e4d68d43f5276f894c2d06a0769e38f2 *NEWS.md
 ab468d9320bd7b1f55ca212f601837fe *R/2bg_Gibbs.R
 2bf5b895e3d840d620a6e9710d7dc503 *R/LassoHiDFastGibbs-package.R
 2c6b1c103486ef414d68a26619d08a33 *R/RcppExports.R
@@ -14,8 +14,8 @@ dd5620094fd1c0675a92e6f3a8da8e63 *R/penalized_nested_Gibbs.R
 a69d04f648ef79fdc4b5a7f0a952eafa *R/penalized_pcg_wrappers.R
 4ad8be65a89d015fd33ff5996a1e64c2 *R/zzz_globals.R
 1045d0a033cb925febccf926ae52bf39 *README.md
-a461b5c81e32652afff4c446a6b65e8f *inst/CITATION
-0287db5f71922d26048c5ba943da1e56 *inst/COPYRIGHTS
+f84cef5714603c8417f2b2fd91f859b5 *inst/CITATION
+e465911e6f95c42f905af6471678d4ed *inst/COPYRIGHTS
 dbd845cd53934503ab63d1bc1ac35f1b *inst/benchmarks/benchmark_horseshoe_ngtp.Rmd
 c7051158a84a94ba14b5f658aede02f8 *inst/benchmarks/benchmark_horseshoe_pgtn.Rmd
 0702f91c5a72af3e2013f33d29fe396c *inst/benchmarks/benchmark_lasso_ngtp.Rmd

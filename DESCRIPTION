@@ -2,7 +2,7 @@ Package: LassoHiDFastGibbs
 Type: Package
 Title: Fast High-Dimensional Gibbs Samplers for Bayesian Lasso
         Regression
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: c(person("John", "Ormerod",
            email = "john.ormerod@sydney.edu.au",
            role = "aut",
@@ -31,13 +31,13 @@ License: GPL-3
 Encoding: UTF-8
 SystemRequirements: C++17
 Imports: Rcpp
-LinkingTo: Rcpp, RcppArmadillo, RcppEigen, RcppNumerical, RcppClock
+LinkingTo: Rcpp, RcppArmadillo, RcppEigen, RcppNumerical
 NeedsCompilation: yes
 RoxygenNote: 7.3.2
 Suggests: posterior
 URL: https://github.com/MJDavoudabadi/LassoHiDFastGibbs
 BugReports: https://github.com/MJDavoudabadi/LassoHiDFastGibbs/issues
-Packaged: 2026-01-26 01:33:54 UTC; mjava
+Packaged: 2026-02-21 05:54:44 UTC; mjava
 Author: John Ormerod [aut] (ORCID: <https://orcid.org/0000-0002-4650-7507>),
   Mohammad Javad Davoudabadi [aut, cre, cph],
   Garth Tarr [aut] (ORCID: <https://orcid.org/0000-0002-6605-7478>),
@@ -46,4 +46,4 @@ Author: John Ormerod [aut] (ORCID: <https://orcid.org/0000-0002-4650-7507>),
     (originally from BayesianLasso package))
 Maintainer: Mohammad Javad Davoudabadi <mohammad.davoudabadi@qut.edu.au>
 Repository: CRAN
-Date/Publication: 2026-01-29 21:50:14 UTC
+Date/Publication: 2026-02-22 00:20:06 UTC

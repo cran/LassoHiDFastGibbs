@@ -1,3 +1,8 @@
+# LassoHiDFastGibbs 0.1.5
+
+* Removed unnecessary LinkingTo dependency on RcppClock.
+* Cleaned build artifacts.
+
 # LassoHiDFastGibbs 0.1.4
 
 # LassoHiDFastGibbs 0.1.3
